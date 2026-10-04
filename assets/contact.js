@@ -1,10 +1,8 @@
 (function () {
-  var form = document.getElementById('demo-booking-form');
+  var form = document.getElementById('booking-form');
   if (!form) return;
 
   var dateField = document.getElementById('booking-date');
-  var status = document.getElementById('demo-confirmation');
-  var submit = document.getElementById('booking-submit');
 
   function localDateString(date) {
     var year = date.getFullYear();
@@ -18,16 +16,21 @@
   dateField.min = localDateString(new Date());
   form.addEventListener('submit', function (event) {
     event.preventDefault();
-    if (!form.checkValidity()) {
-      form.reportValidity();
-      return;
-    }
+    if (!form.reportValidity()) return;
 
-    status.textContent = 'Demo complete. No booking was made. Your request was not sent or stored. In a live version, Trendify would follow up by email or phone.';
-    status.hidden = false;
-    form.reset();
-    dateField.min = localDateString(new Date());
-    status.focus();
+    var fields = new FormData(form);
+    var body = [
+      'Name: ' + fields.get('name'),
+      'Email: ' + fields.get('email'),
+      'Phone: ' + fields.get('phone'),
+      'Preferred date: ' + fields.get('date'),
+      'Preferred time: ' + fields.get('time'),
+      'Purpose: ' + fields.get('purpose')
+    ].join('\r\n');
+    var subject = 'Booking request for Tiff';
+    var mailto = 'mailto:hello@tiff.co.ke?subject=' + encodeURIComponent(subject) +
+      '&body=' + encodeURIComponent(body);
+
+    window.location.href = mailto;
   });
-  submit.disabled = false;
 })();
