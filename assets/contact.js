@@ -8,8 +8,10 @@
 
   function localDateString(date) {
     var year = date.getFullYear();
-    var month = String(date.getMonth() + 1).padStart(2, '0');
-    var day = String(date.getDate()).padStart(2, '0');
+    var month = date.getMonth() + 1;
+    var day = date.getDate();
+    month = (month < 10 ? '0' : '') + month;
+    day = (day < 10 ? '0' : '') + day;
     return year + '-' + month + '-' + day;
   }
 
