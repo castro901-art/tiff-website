@@ -3,18 +3,76 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Aurelius | Trendify Labs | Trendify</title>
-  <meta name="description" content="Aurelius is a Trendify Labs model focused on reasoning, analysis and complex knowledge work.">
-  <link rel="canonical" href="models.html#aurelius">
-  <script>
-    window.location.replace('models.html#aurelius');
-  </script>
+  <title>Introducing Aurelius | Trendify Labs | Trendify</title>
+  <meta name="description" content="Introducing Aurelius, Trendify Labs' newest model for reasoning, analysis and complex knowledge work.">
+  <link rel="icon" href="assets/tiff-mark.png">
+  <link rel="stylesheet" href="assets/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    .release-hero{padding:clamp(76px,12vw,148px) 0 56px;background:radial-gradient(ellipse at 75% 15%,rgba(147,75,255,.16),transparent 44%),radial-gradient(ellipse at 12% 20%,rgba(75,123,255,.08),transparent 42%);border-bottom:1px solid var(--line)}
+    .release-hero h1{font-size:clamp(4rem,12vw,9rem);margin:10px 0 20px;letter-spacing:-.07em}
+    .release-tagline{max-width:680px;color:var(--text);font:600 clamp(1.2rem,2.5vw,1.8rem)/1.3 Syne,'DM Sans',sans-serif;margin:0 0 14px}
+    .release-date{color:var(--muted);margin:0}
+    .release-toc{display:flex;gap:10px;overflow-x:auto;margin-top:42px;padding:4px 0 10px;scrollbar-width:thin}
+    .release-toc a{display:inline-flex;align-items:center;gap:9px;flex:0 0 auto;padding:10px 14px;border:1px solid var(--line);border-radius:999px;color:var(--muted);font-size:.9rem;white-space:nowrap}
+    .release-toc a:hover,.release-toc a:focus-visible{border-color:var(--accent);color:var(--text)}
+    .release-toc span{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:rgba(145,73,252,.18);color:#d8c1ff;font-size:.75rem;font-weight:700}
+    .release-body{padding:64px 0 84px}
+    .release-section{max-width:900px;margin:0 auto 58px;padding:0 0 52px;border-bottom:1px solid var(--line);scroll-margin-top:100px}
+    .release-section:last-of-type{border-bottom:0;margin-bottom:0}
+    .release-section h2{margin-bottom:18px}
+    .release-section h3{margin-top:34px}
+    .release-section .lead{font-size:1.16rem;line-height:1.75;color:var(--text)}
+    .release-section ul{color:var(--muted);padding-left:1.35rem}
+    .release-section li{padding:4px 0}
+    .table-scroll{overflow-x:auto;margin:24px 0 18px;border:1px solid var(--line);border-radius:13px;background:rgba(255,255,255,.018);-webkit-overflow-scrolling:touch}
+    .release-table{border-collapse:collapse;width:100%;min-width:610px;margin:0}
+    .release-table th,.release-table td{padding:14px 16px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+    .release-table tr:last-child td{border-bottom:0}
+    .release-table th{font:700 .78rem Syne,'DM Sans',sans-serif;letter-spacing:.04em;color:var(--text);background:rgba(145,73,252,.09)}
+    .release-table td{color:var(--muted)}
+    .release-table .num{font-variant-numeric:tabular-nums;text-align:right;color:var(--text)}
+    .release-table .lead-col{color:#d8c1ff;font-weight:700}
+    .release-table .gain{color:#c7a5ff;font-weight:700}
+    .release-note{padding:16px 18px;border:1px solid var(--line);border-radius:12px;color:var(--muted);font-size:.92rem}
+    .release-actions{justify-content:flex-start;margin-top:10px}
+    @media (max-width:700px){.release-hero{padding-top:72px}.release-toc{margin-top:30px}.release-body{padding-top:48px}.release-section{margin-bottom:44px;padding-bottom:40px}.release-section .lead{font-size:1.06rem}.release-table th,.release-table td{padding:12px 13px}.release-actions .btn{flex:1 1 100%;text-align:center}}
+  </style>
 </head>
 <body>
-  <main>
-    <h1>Aurelius</h1>
-    <p>Aurelius details are available on the Models page.</p>
-    <p><a href="models.html#aurelius">View Aurelius on Models</a></p>
+  <main id="main-content">
+    <section class="release-hero"><div class="wrap">
+      <p class="kicker">Trendify Labs model release</p>
+      <h1>Aurelius</h1>
+      <p class="release-tagline">Intelligence built for deeper reasoning.</p>
+      <p class="release-date">Released 7 July 2026</p>
+      <nav class="release-toc" aria-label="On this page">
+        <a href="#intro"><span>1</span>Introduction</a><a href="#performance"><span>2</span>Performance and speed</a><a href="#safety"><span>3</span>Safety</a><a href="#start"><span>4</span>Getting started</a>
+      </nav>
+    </div></section>
+    <div class="wrap release-body">
+      <img class="release-visual" src="assets/aurelius-marble-ai.webp" alt="Aurelius: intelligence, shaped by wisdom" width="900" height="502" loading="eager">
+      <section class="release-section" id="intro">
+        <h2>Introduction</h2>
+        <p class="lead">Introducing Aurelius, our newest model for reasoning, analysis and complex knowledge work. It is a clear upgrade over Llull, scoring higher on all four of our reasoning evaluations, with the largest gain, 9 points, on Complex Problem-Solving.</p>
+        <p>Across the four evaluations, Aurelius gains nearly 8 points on average. The extra reasoning comes with a small cost in speed: its average first response takes 2.8 seconds, about 17% slower than Llull&rsquo;s 2.4 seconds, reflecting the additional reasoning it does on more complex requests.</p>
+        <p>Aurelius is named after Marcus Aurelius, and a principle associated with him sits at the center of the model: <em>reason before reaction.</em> It is built to understand a problem before it answers it: to work out what is really being asked, what surrounds the question and what the evidence supports.</p>
+        <p>Aurelius improves on Llull:</p>
+        <ul><li><strong>Contextual Reasoning.</strong> 91%, up from Llull&rsquo;s 84% (+7 points). This evaluation measures interpreting context, resolving ambiguity and reaching the correct conclusion.</li><li><strong>Knowledge Reasoning.</strong> 89%, up from Llull&rsquo;s 81% (+8 points). This evaluation measures multi-step reasoning across knowledge-intensive questions.</li><li><strong>Structured Analysis.</strong> 93%, up from Llull&rsquo;s 86% (+7 points). This evaluation measures organizing information, identifying relationships and producing logically structured answers.</li><li><strong>Complex Problem-Solving.</strong> 88%, up from Llull&rsquo;s 79% (+9 points). This evaluation measures multi-step problems that require reasoning across several pieces of information.</li></ul>
+        <p><strong>Aurelius is built for</strong> complex and strategic analysis, research and synthesis across multiple sources, structured problem solving, long-form knowledge work, and tasks that need careful interpretation and judgment.</p>
+      </section>
+      <section class="release-section" id="performance">
+        <h2>Performance and speed</h2><p>Aurelius scores higher than Llull on every evaluation we ran.</p>
+        <div class="table-scroll" tabindex="0" aria-label="Evaluation results table; scroll horizontally on small screens"><table class="release-table"><thead><tr><th scope="col">Evaluation</th><th scope="col">Aurelius</th><th scope="col">Llull</th><th scope="col">Aurelius gain</th></tr></thead><tbody><tr><td>Contextual Reasoning</td><td class="num lead-col">91%</td><td class="num">84%</td><td class="gain">+7 pts</td></tr><tr><td>Knowledge Reasoning</td><td class="num lead-col">89%</td><td class="num">81%</td><td class="gain">+8 pts</td></tr><tr><td>Structured Analysis</td><td class="num lead-col">93%</td><td class="num">86%</td><td class="gain">+7 pts</td></tr><tr><td>Complex Problem-Solving</td><td class="num lead-col">88%</td><td class="num">79%</td><td class="gain">+9 pts</td></tr></tbody></table></div>
+        <p class="release-note">All Aurelius and Llull results come from Trendify Labs internal evaluations. Both models were run on the same evaluation sets, with the same prompts and inference conditions. We have not yet published results on third-party benchmarks, and we will add broader comparisons as our evaluation suite expands.</p>
+        <h3>Speed</h3><p>Aurelius is the more thorough of the two models, and that shows in its response time. Its average first response is 2.8 seconds, compared to Llull&rsquo;s 2.4 seconds. That is about 17% slower on average.</p>
+        <div class="table-scroll" tabindex="0" aria-label="Model response speed table; scroll horizontally on small screens"><table class="release-table"><thead><tr><th scope="col">Model</th><th scope="col">Average time to first response</th></tr></thead><tbody><tr><td>Aurelius</td><td class="num">2.8 seconds</td></tr><tr><td>Llull</td><td class="num">2.4 seconds</td></tr></tbody></table></div>
+      </section>
+      <section class="release-section" id="safety"><h2>Safety</h2><p>We evaluated both models against a structured internal safety suite covering harmful requests, privacy-sensitive requests, misinformation, prompt injection, unsafe instructions, sensitive personal data and adversarial prompts. Tests ran under the same inference and system-safety conditions for both models.</p><h3>Safeguards</h3><ul><li>system-level safety policies</li><li>input and output filtering</li><li>instruction hierarchy</li><li>refusal handling</li><li>prompt-injection resistance</li><li>continuous evaluation against internal adversarial test sets</li></ul><h3>Known limits</h3><p>Neither model is infallible. Both can produce incorrect or incomplete information, particularly when prompts are ambiguous or the information is unavailable. Aurelius can also spend more time reasoning on difficult requests, resulting in higher latency.</p></section>
+      <section class="release-section" id="start"><h2>Getting started</h2><p>Aurelius powers <strong>Tiff Normal</strong>, and Llull powers <strong>Tiff Lite</strong>. Both models are available through the Tiff platform, including the Tiff app, the web app, Telegram and Instagram.</p><p>Developers can use Aurelius through the API with the model name <code>aurelius</code>. To get API access, <a href="contact.html">contact Trendify Labs</a>.</p><p>This page will be updated as we publish more results.</p></section>
+      <div class="btns release-actions"><a class="btn primary" href="tiff.html">Explore Tiff</a><a class="btn ghost" href="contact.html">Request API access</a><a class="btn ghost" href="models.html">All models</a></div>
+    </div>
   </main>
+  <script src="assets/site.js"></script>
 </body>
 </html>
