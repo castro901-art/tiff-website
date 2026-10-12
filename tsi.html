@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TSI | Trendify Sports Intelligence | Trendify Labs</title>
+  <meta name="description" content="Documentation for TSI (Trendify Sports Intelligence), a Trendify Labs football analysis studio that turns authorised match highlights into timestamped observations and tactical discussion material.">
+  <link rel="icon" href="assets/tiff-mark.png">
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/publication.css">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+<main id="main-content">
+  <section class="publication-hero"><div class="wrap">
+    <p class="publication-kicker">Trendify Labs &middot; Sports research</p>
+    <h1>TSI</h1>
+    <p class="lead">Trendify Sports Intelligence. Understand the game beyond the score.</p>
+    <p class="lead">TSI is a football analysis studio that turns authorised match highlights into timestamped observations and tactical discussion material, starting with Kenyan football and the FKF Premier League.</p>
+    <p class="publication-date">Documentation &middot; Early development</p>
+    <nav class="publication-toc" aria-label="On this page">
+      <a href="#overview">Overview</a>
+      <a href="#audience">Who it is for</a>
+      <a href="#capabilities">What it does</a>
+      <a href="#reports">Tactical reports</a>
+      <a href="#evidence">Evidence and limits</a>
+      <a href="#status">Status</a>
+    </nav>
+  </div></section>
+  <div class="wrap publication-body">
+    <section class="publication-section" id="overview">
+      <h2>Overview</h2>
+      <p class="lead">TSI (Trendify Sports Intelligence) is a football analysis studio from Trendify Labs, built for independent analysts, pundits, journalists, creators and coaches.</p>
+      <p>It turns authorised match highlights into timestamped observations and tactical discussion material, starting with Kenyan football and the FKF Premier League.</p>
+      <p>The studio is designed to be self-service and responsive, and its analysis must be real rather than a report generated from match metadata alone. Users should not need specialist equipment, stadium cameras or professional analysis software.</p>
+      <div class="publication-meta">
+        <div><strong>Status</strong><span>Early development. The first milestone is the video-ingestion and analysis backend.</span></div>
+        <div><strong>Initial focus</strong><span>Kenyan football, including the FKF Premier League.</span></div>
+        <div><strong>Product</strong><span>A self-service, responsive web studio from Trendify Labs.</span></div>
+      </div>
+    </section>
+
+    <section class="publication-section" id="audience">
+      <h2>Who it is for</h2>
+      <p>TSI is built for football pundits, independent analysts, journalists, content creators, coaches and enthusiasts.</p>
+      <ul>
+        <li>No club subscription or institutional account is required.</li>
+        <li>Signed-in analyses are saved and can be reopened.</li>
+        <li>A bounded guest or trial workflow is offered where the architecture supports it.</li>
+      </ul>
+    </section>
+
+    <section class="publication-section" id="capabilities">
+      <h2>What it does</h2>
+      <h3>Match Analysis Studio</h3>
+      <p>Users select Analyse a Match, upload authorised footage or submit a supported URL, review the source limitations and start analysis. The studio shows processing status, candidate events and timestamped evidence, and allows metadata to be corrected before a final report is generated. Inputs include a title, optional team names, competition and match date where known, and an analysis type.</p>
+      <h3>Highlight analysis</h3>
+      <p>Analysis runs through a provider-independent interface that separates video understanding, detection, tracking and report generation. It extracts candidate goals and scoring sequences, shots, saves, corners, free kicks, attacking combinations, counterattacks, visible defensive errors, selected set pieces and supported player movement. Findings carry timestamped references where available, and visible observations are kept separate from inferred interpretations.</p>
+      <h3>Pundit Mode</h3>
+      <p>Pundit Mode turns an analysed match into editorial material: tactical breakdowns, player observations, decisions needing further review, pre-match and post-match notes, podcast questions, video-script outlines, short social posts and alternative-movement discussion points. Factual claims are grounded in verified events or identified sources, and unverified candidate observations stay explicitly labelled.</p>
+      <h3>Ask the Match</h3>
+      <p>Users can ask follow-up questions about the same match. TSI retrieves relevant stored events and evidence before answering, keeps conversation context, and cites evidence while distinguishing observations, interpretations and user-created hypothetical scenarios.</p>
+      <h3>Evidence timeline</h3>
+      <p>Each finding records a timestamp, type, explanation, verified identity where available, confidence or verification status, a source reference and reliable movement information. Users can mark findings correct, incorrect or uncertain, and the review history is retained.</p>
+      <h3>Movement review</h3>
+      <p>For supported sequences, the studio provides pause and scrub controls with detected-player markers, silhouettes or tracking points, and shows paths only where confidence supports them. Users can select a player, drag an alternative position or draw a run, annotate the adjustment and compare original and hypothetical movement without changing the video. Annotations may include run earlier, hold width, drop deeper, attack the near post and cover the passing lane.</p>
+      <h3>Reports and access</h3>
+      <p>Analyses can be saved, reopened, exported as PDF reports and structured event data, shared with access controls, and their talking points copied. Original evidence and user adjustments remain separate, and hypothetical labels are kept in shared or exported scenarios.</p>
+    </section>
+
+    <section class="publication-section" id="reports">
+      <h2>Tactical reports</h2>
+      <p>Reports are organised into four areas.</p>
+      <ul>
+        <li><strong>Attacking.</strong> Development of visible attacks, progression, wide play, combinations, chance creation, finishing, runs and positioning options.</li>
+        <li><strong>Defensive.</strong> Visible actions, marking or positioning problems, transitions, errors leading to chances and alternative coverage.</li>
+        <li><strong>Set pieces.</strong> Visible routines, delivery and finishing patterns, unresolved questions and optional positioning review.</li>
+        <li><strong>Match interpretation.</strong> Supported turning points, strengths, weaknesses, alternative interpretations and what the footage cannot resolve.</li>
+      </ul>
+    </section>
+
+    <section class="publication-section" id="evidence">
+      <h2>Evidence, safety and limits</h2>
+      <p>Highlights show only part of a match. TSI is designed to distinguish visible evidence, interpretation and hypothetical scenarios rather than invent full-match statistics or outcomes.</p>
+      <ul>
+        <li>Only legally accessible, authorised footage is accepted. Ingestion respects copyright, platform terms and access controls, and does not bypass restrictions.</li>
+        <li>Model output starts unverified regardless of its confidence score. Visible observations are stored separately from interpretations, and model and pipeline versions are retained.</li>
+        <li>An alternative position or run is a tactical and coaching exercise, not evidence of what happened or proof of what would happen.</li>
+        <li>Credentials and source footage stay server-side and out of public commits and client bundles.</li>
+        <li>TSI does not silently switch to paid services and does not promise unlimited free analysis.</li>
+      </ul>
+      <div class="publication-callout">
+        <p><strong>What TSI does not claim.</strong> It does not claim full-match possession, complete passing networks, heatmaps, formations or comprehensive pressing analysis from incomplete highlights. It does not invent quotations, referee decisions, identities or statistics, and it leaves inconclusive footage explained rather than guessed. Factual claims refer to valid evidence ranges.</p>
+      </div>
+    </section>
+
+    <section class="publication-section" id="status">
+      <h2>Status and development</h2>
+      <p>TSI is in early development. The first milestone is the video-ingestion and analysis backend, followed by the responsive studio.</p>
+      <p>The planned architecture pairs a React and TypeScript studio with a FastAPI backend for ingestion, analysis jobs and evidence APIs, a background worker for provider requests and selected-sequence tracking, and SQLite with local file storage during development using replaceable persistence adapters. Provider interfaces separate video understanding, detection, tracking and report generation.</p>
+      <p>Before release, the full workflow is validated on representative, authorised football highlights, including Kenyan-football footage where available, across mobile and desktop. Unit tests with fixtures do not replace real-footage evaluation. No software licence has been selected yet.</p>
+      <p class="publication-note">This page documents TSI as described in the product repository. It will be updated as the product develops. Source: the Trendify Sports Intelligence product requirements and implementation plan.</p>
+    </section>
+
+    <div class="btns publication-actions">
+      <a class="btn primary" href="contact.html">Contact Trendify Labs</a>
+      <a class="btn ghost" href="research.html#sports">Sports research</a>
+      <a class="btn ghost" href="news-sports.html">Sports position paper</a>
+    </div>
+  </div>
+</main>
+<script src="assets/site.js"></script>
+</body>
+</html>
