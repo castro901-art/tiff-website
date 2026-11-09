@@ -13,7 +13,7 @@
     if (!prompt) return;
     try {
       window.sessionStorage.setItem(pendingPromptKey, prompt);
-      window.location.assign('/page');
+      window.location.assign('/page/');
     } catch {
       status.textContent = 'Your browser could not carry the question to Tiff. Please allow session storage and try again.';
     }

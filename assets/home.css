@@ -1,102 +1,179 @@
-/* Homepage-only Tiff hero and question launcher. */
-.tiff-hero {
+/* Minimal Tiff homepage inspired by the supplied prompt-screen reference. */
+.home-page {
+  background: #000;
+}
+.home-page .site-header {
   position: relative;
-  overflow: hidden;
-  padding: 40px 0 48px;
-  border-bottom: 1px solid #252032;
-  background:
-    radial-gradient(ellipse at 50% 12%, rgba(136, 65, 232, .15), transparent 59%),
-    radial-gradient(ellipse at 82% 65%, rgba(92, 50, 170, .055), transparent 44%),
-    #08090d;
+  background: #000;
+  border-bottom: 0;
 }
-.tiff-hero-inner { position: relative; max-width: 920px; text-align: center; }
-.tiff-hero-brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 19px;
-  font-family: Syne, 'DM Sans', sans-serif;
-  font-size: 1.35rem;
-  font-weight: 700;
-  letter-spacing: -.025em;
-  line-height: 1.25;
+.home-page .nav {
+  min-height: 48px;
+  justify-content: flex-start;
 }
-.tiff-hero-brand img { width: 46px; height: 41px; object-fit: contain; }
-.tiff-hero-by { display: block; margin-top: 3px; color: var(--muted); font-family: 'DM Sans', sans-serif; font-size: .7rem; font-weight: 400; letter-spacing: .025em; }
-.tiff-hero h1 { margin: 0 0 20px; font-size: clamp(2.6rem, 5.8vw, 4.25rem); line-height: 1.04; letter-spacing: -.045em; }
-.tiff-hero h1 em { color: #b58aff; font-style: normal; }
-.tiff-hero-lead { margin: 0 auto; color: #b8b4c4; font-size: 1.08rem; line-height: 1.6; text-wrap: balance; }
-.tiff-chat-shell { width: min(100%, 750px); margin: 24px auto 0; text-align: left; }
+.home-page .nav nav,
+.home-page .nav .menu-btn,
+.home-page .site-footer {
+  display: none;
+}
+.home-main {
+  min-height: calc(100svh - 48px);
+  background: #000;
+}
+.tiff-hero {
+  min-height: calc(100svh - 48px);
+  display: flex;
+  align-items: flex-start;
+  padding: 0 0 42px;
+  background: #000;
+}
+.tiff-hero-inner {
+  width: min(840px, calc(100% - 112px));
+  margin: 0 auto;
+  text-align: center;
+}
+.tiff-hero h1 {
+  margin: 0 0 17px;
+  color: #f5f5f5;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: clamp(2.25rem, 8vw, 3.75rem);
+  font-weight: 400;
+  letter-spacing: -.045em;
+  line-height: 1.15;
+  text-wrap: balance;
+}
+.tiff-chat-shell {
+  width: min(100%, 840px);
+  margin: 0 auto;
+  text-align: left;
+}
 .tiff-launch-form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  min-height: 132px;
-  padding: 16px 17px 12px 20px;
-  border: 1px solid #51455f;
-  border-radius: 20px;
-  background: #15131b;
-  box-shadow: 0 12px 48px rgba(0, 0, 0, .2), 0 0 30px rgba(138, 71, 219, .06);
-  transition: border-color .18s, box-shadow .18s;
+  position: relative;
+  min-height: 212px;
+  overflow: hidden;
+  border: 1px solid transparent;
+  border-radius: 38px;
+  background: #202020;
+  transition: border-color .18s;
 }
-.tiff-launch-form:focus-within { border-color: #a57ad4; box-shadow: 0 12px 48px rgba(0, 0, 0, .2), 0 0 30px rgba(138, 71, 219, .13); }
-.tiff-launch-form textarea { display: block; width: 100%; flex: 1 1 auto; min-height: 54px; max-height: 152px; resize: none; padding: 5px 1px; border: 0; outline: 0; background: transparent; color: #f1eef5; font: inherit; font-size: 1.02rem; line-height: 1.5; }
-.tiff-launch-form textarea::placeholder { color: #b6b0bf; }
-.tiff-launch-bottom { display: flex; align-items: center; justify-content: space-between; gap: 14px; color: #8f899b; font-size: .74rem; }
-.tiff-launch-form button { display: inline-flex; flex: 0 0 40px; align-items: center; justify-content: center; width: 40px; height: 40px; border: 1px solid #8954cb; border-radius: 13px; background: #7541bd; color: #fff; cursor: pointer; transition: background-color .16s, transform .16s; }
-.tiff-launch-form button:hover { transform: translateY(-1px); background: #8954cb; }
-.tiff-launch-form button svg { width: 21px; height: 21px; }
-.tiff-launch-form :focus-visible, .tiff-starter-links button:focus-visible, .tiff-model-link:focus-visible { outline: 2px solid #b58aff; outline-offset: 4px; }
-.tiff-chat-status { min-height: 0; margin: 0; color: #d4a7a7; font-size: .75rem; }
-.tiff-chat-status:empty { display: none; }
-.tiff-chat-note { margin: 10px 4px 0; color: var(--muted); font-size: .72rem; line-height: 1.5; text-align: center; }
-.tiff-chat-note a { color: #c9a9f5; text-decoration: underline; text-underline-offset: 3px; }
-.tiff-starters { width: min(100%, 750px); margin: 18px auto 0; }
-.tiff-starters > p { margin: 0 0 11px; color: var(--muted); font-size: .76rem; }
-.tiff-starter-links { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 9px; }
-.tiff-starter-links button {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  min-height: 58px;
-  padding: 13px 14px;
-  border: 1px solid #302739;
-  border-radius: 12px;
-  background: rgba(20, 17, 26, .75);
-  color: #bfb7ca;
+.tiff-launch-form:focus-within {
+  border-color: #4a4a4a;
+}
+.tiff-launch-form textarea {
+  display: block;
+  width: 100%;
+  min-height: 210px;
+  max-height: 360px;
+  resize: none;
+  padding: 25px 27px 104px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #f5f5f5;
   font: inherit;
-  font-size: .79rem;
+  font-size: clamp(1.25rem, 4.5vw, 2rem);
+  font-weight: 300;
   line-height: 1.4;
   text-align: left;
+}
+.tiff-launch-form textarea::placeholder {
+  color: #aaa;
+  opacity: 1;
+}
+.tiff-launch-form button {
+  position: absolute;
+  right: 22px;
+  bottom: 22px;
+  display: inline-flex;
+  width: 88px;
+  height: 88px;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 50%;
+  background: #414141;
+  color: #fff;
   cursor: pointer;
-  transition: border-color .18s, color .18s, background-color .18s;
+  transition: background-color .16s, transform .16s;
 }
-.tiff-starter-links button > span { color: #a881dc; font-size: 1rem; }
-.tiff-starter-links button:hover { border-color: #715094; background: #1a1425; color: var(--text); }
-.tiff-starter-links[hidden], .tiff-starters[hidden] { display: none; }
-.tiff-model-link { display: inline-flex; align-items: center; gap: 9px; margin-top: 29px; color: #bca9d8; font-size: .82rem; }
-.tiff-model-link:hover { color: #d5bcff; text-decoration: underline; }
+.tiff-launch-form button:hover {
+  transform: translateY(-1px);
+  background: #505050;
+}
+.tiff-launch-form button svg {
+  width: 31px;
+  height: 31px;
+}
+.tiff-launch-form :focus-visible {
+  outline: 2px solid #d5d5d5;
+  outline-offset: 4px;
+}
+.tiff-chat-status {
+  min-height: 0;
+  margin: 0;
+  color: #e2a6a6;
+  font-size: .8rem;
+}
+.tiff-chat-status:empty {
+  display: none;
+}
+.tiff-chat-note {
+  margin: 13px 8px 0;
+  color: #858585;
+  font-size: .72rem;
+  line-height: 1.5;
+  text-align: center;
+}
+.tiff-chat-note a {
+  color: #c6c6c6;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
 @media (max-width: 700px) {
-  .tiff-hero { padding: 40px 0 45px; }
-  .tiff-hero-brand { margin-bottom: 21px; }
-  .tiff-hero h1 { margin-bottom: 17px; font-size: clamp(2.45rem, 8.7vw, 3.6rem); }
-  .tiff-hero-lead { max-width: 370px; font-size: .96rem; }
-  .tiff-chat-shell { margin-top: 21px; }
-  .tiff-launch-form { min-height: 128px; padding: 14px 13px 10px 16px; border-radius: 17px; }
-  .tiff-launch-form textarea { font-size: .96rem; }
-  .tiff-launch-bottom { font-size: .68rem; }
-  .tiff-launch-form button { flex-basis: 38px; width: 38px; height: 38px; }
-  .tiff-starters { margin-top: 22px; }
-  .tiff-starter-links { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
-  .tiff-starter-links button { min-height: 58px; padding: 12px; font-size: .78rem; }
-  .tiff-model-link { margin-top: 25px; font-size: .78rem; }
-  .tiff-chat-note { margin-right: 2px; margin-left: 2px; font-size: .66rem; }
-}
-@media (max-width: 370px) {
-  .tiff-hero h1 { font-size: clamp(2rem, 9vw, 2.25rem); line-height: 1.1; }
-  .tiff-launch-bottom { align-items: flex-end; }
+  .home-page .nav {
+    min-height: 56px;
+  }
+  .home-main,
+  .tiff-hero {
+    min-height: calc(100svh - 56px);
+  }
+  .tiff-hero {
+    padding-top: 18px;
+  }
+  .tiff-hero-inner {
+    width: calc(100% - 36px);
+  }
+  .tiff-hero h1 {
+    margin-bottom: 23px;
+    font-size: clamp(2.1rem, 8vw, 3.25rem);
+  }
+  .tiff-launch-form {
+    min-height: 190px;
+    border-radius: 30px;
+  }
+  .tiff-launch-form textarea {
+    min-height: 188px;
+    padding: 22px 20px 86px;
+    font-size: clamp(1.2rem, 5vw, 1.6rem);
+  }
+  .tiff-launch-form button {
+    right: 15px;
+    bottom: 15px;
+    width: 68px;
+    height: 68px;
+  }
+  .tiff-launch-form button svg {
+    width: 27px;
+    height: 27px;
+  }
+  .tiff-chat-note {
+    margin-top: 11px;
+    font-size: .68rem;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
-  .tiff-launch-form, .tiff-launch-form button, .tiff-starter-links button { transition: none; }
+  .tiff-launch-form,
+  .tiff-launch-form button {
+    transition: none;
+  }
 }
