@@ -10,19 +10,6 @@
     #08090d;
 }
 .tiff-hero-inner { position: relative; max-width: 920px; text-align: center; }
-.tiff-hero-brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 19px;
-  font-family: Syne, 'DM Sans', sans-serif;
-  font-size: 1.35rem;
-  font-weight: 700;
-  letter-spacing: -.025em;
-  line-height: 1.25;
-}
-.tiff-hero-brand img { width: 46px; height: 41px; object-fit: contain; }
-.tiff-hero-by { display: block; margin-top: 3px; color: var(--muted); font-family: 'DM Sans', sans-serif; font-size: .7rem; font-weight: 400; letter-spacing: .025em; }
 .tiff-hero h1 {
   margin: 0 0 23px;
   color: #f5f5f5;
@@ -36,10 +23,10 @@
 .tiff-chat-shell { width: min(100%, 750px); margin: 0 auto; text-align: left; }
 .tiff-launch-form {
   position: relative;
-  min-height: 212px;
+  min-height: 144px;
   overflow: hidden;
   border: 1px solid #35323b;
-  border-radius: 36px;
+  border-radius: 26px;
   background: #202020;
   box-shadow: 0 12px 48px rgba(0, 0, 0, .18);
   transition: border-color .18s, box-shadow .18s;
@@ -51,10 +38,10 @@
 .tiff-launch-form textarea {
   display: block;
   width: 100%;
-  min-height: 210px;
-  max-height: 360px;
+  min-height: 142px;
+  max-height: 240px;
   resize: none;
-  padding: 24px 27px 108px;
+  padding: 20px 24px 78px;
   border: 0;
   outline: 0;
   background: transparent;
@@ -68,11 +55,11 @@
 .tiff-launch-form textarea::placeholder { color: #aaa; opacity: 1; }
 .tiff-launch-form button {
   position: absolute;
-  right: 22px;
-  bottom: 22px;
+  right: 18px;
+  bottom: 18px;
   display: inline-flex;
-  width: 88px;
-  height: 88px;
+  width: 64px;
+  height: 64px;
   align-items: center;
   justify-content: center;
   border: 0;
@@ -83,24 +70,20 @@
   transition: background-color .16s, transform .16s;
 }
 .tiff-launch-form button:hover { transform: translateY(-1px); background: #505050; }
-.tiff-launch-form button svg { width: 31px; height: 31px; }
+.tiff-launch-form button svg { width: 26px; height: 26px; }
 .tiff-launch-form :focus-visible { outline: 2px solid #c5a7ea; outline-offset: 4px; }
 .tiff-chat-status { min-height: 0; margin: 0; color: #e2a6a6; font-size: .8rem; }
 .tiff-chat-status:empty { display: none; }
-.tiff-chat-note { margin: 13px 8px 0; color: var(--muted); font-size: .72rem; line-height: 1.5; text-align: center; }
-.tiff-chat-note a { color: #c9a9f5; text-decoration: underline; text-underline-offset: 3px; }
 .tiff-model-link { display: inline-flex; align-items: center; gap: 9px; margin-top: 25px; color: #bca9d8; font-size: .82rem; }
 .tiff-model-link:hover { color: #d5bcff; text-decoration: underline; }
 @media (max-width: 700px) {
   .tiff-hero { padding: 34px 0 40px; }
-  .tiff-hero-brand { margin-bottom: 20px; }
   .tiff-hero h1 { margin-bottom: 21px; font-size: clamp(2.15rem, 8vw, 3.25rem); }
   .tiff-chat-shell { margin-top: 0; }
-  .tiff-launch-form { min-height: 190px; border-radius: 30px; }
-  .tiff-launch-form textarea { min-height: 188px; padding: 22px 20px 86px; font-size: clamp(1.2rem, 5vw, 1.6rem); }
-  .tiff-launch-form button { right: 15px; bottom: 15px; width: 68px; height: 68px; }
-  .tiff-launch-form button svg { width: 27px; height: 27px; }
-  .tiff-chat-note { margin-right: 2px; margin-left: 2px; font-size: .68rem; }
+  .tiff-launch-form { min-height: 128px; border-radius: 22px; }
+  .tiff-launch-form textarea { min-height: 126px; padding: 18px 18px 68px; font-size: clamp(1.2rem, 5vw, 1.6rem); }
+  .tiff-launch-form button { right: 14px; bottom: 14px; width: 52px; height: 52px; }
+  .tiff-launch-form button svg { width: 24px; height: 24px; }
   .tiff-model-link { margin-top: 22px; font-size: .78rem; }
 }
 @media (max-width: 370px) {
