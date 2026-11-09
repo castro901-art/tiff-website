@@ -7,6 +7,7 @@
 
   <link rel="icon" href="assets/tiff-mark.png">
   <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/home.css">
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet">
 
 
@@ -51,14 +52,29 @@
 </head>
 <body>
   <main id="main-content">
-    <section class="hero">
-      <div class="wrap">
-        <h1>Intelligence <em>redefined</em></h1>
-        <p class="lead">We build intelligent systems, models and products that understand the world they are built for.</p>
-        <div class="btns">
-          <a class="btn primary" href="tiff.html#get">Try Tiff</a>
-          <a class="btn ghost" href="models.html">Explore our models</a>
+    <section class="tiff-hero" aria-labelledby="tiff-hero-title">
+      <div class="wrap tiff-hero-inner">
+        <div class="tiff-hero-brand">
+          <img src="assets/tiff-mark.png" alt="" width="56" height="50">
+          <span>Tiff <span class="tiff-hero-by">by Trendify Labs</span></span>
         </div>
+        <h1 id="tiff-hero-title">Your next idea<br>starts with <em>Tiff.</em></h1>
+        <p class="tiff-hero-lead">Ask a question. Find the words. Explore what comes next.</p>
+        <a class="tiff-prompt-box" href="https://trendifyco-5mys2fwz.manus.space/chat" aria-label="Open Tiff Chat to ask a question">
+          <span class="tiff-prompt-placeholder">Ask Tiff anything…</span>
+          <span class="tiff-prompt-action">Open Tiff Chat <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></span>
+        </a>
+        <p class="tiff-chat-note">Your conversation starts in Tiff Chat.</p>
+        <div class="tiff-starters" aria-labelledby="tiff-starters-label">
+          <p id="tiff-starters-label">Need a starting point?</p>
+          <div class="tiff-starter-links">
+            <a href="https://trendifyco-5mys2fwz.manus.space/chat" aria-label="Open Tiff Chat: Explain a topic simply"><span>Explain a topic simply</span><span aria-hidden="true">↗</span></a>
+            <a href="https://trendifyco-5mys2fwz.manus.space/chat" aria-label="Open Tiff Chat: Help me write something"><span>Help me write something</span><span aria-hidden="true">↗</span></a>
+            <a href="https://trendifyco-5mys2fwz.manus.space/chat" aria-label="Open Tiff Chat: Brainstorm a fresh idea"><span>Brainstorm a fresh idea</span><span aria-hidden="true">↗</span></a>
+            <a href="https://trendifyco-5mys2fwz.manus.space/chat" aria-label="Open Tiff Chat: Plan my next project"><span>Plan my next project</span><span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+        <a class="tiff-model-link" href="models.html">Explore the models behind our work <span aria-hidden="true">→</span></a>
       </div>
     </section>
 
