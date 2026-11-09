@@ -60,28 +60,19 @@
         </div>
         <h1 id="tiff-hero-title">Your next idea<br>starts with <em>Tiff.</em></h1>
         <p class="tiff-hero-lead">Ask a question. Find the words. Explore what comes next.</p>
-        <div class="tiff-chat-shell" id="tiff-chat" data-tiff-chat>
-          <section class="tiff-chat-card" aria-label="Chat with Tiff">
-            <header class="tiff-chat-header">
-              <div class="tiff-chat-identity">
-                <img src="assets/tiff-mark.png" alt="" width="40" height="36">
-                <span><strong>Tiff</strong><small>AI assistant</small></span>
-              </div>
-              <button class="tiff-new-chat" type="button" data-new-chat>New chat</button>
-            </header>
-            <div class="tiff-chat-log" data-chat-log role="log" aria-live="polite" aria-relevant="additions text" aria-label="Tiff conversation">
-              <article class="tiff-message assistant"><span class="tiff-message-label">Tiff</span><p class="tiff-message-body">Hi, I’m Tiff. What would you like to explore?</p></article>
-            </div>
-            <p class="tiff-chat-status" data-chat-status role="status" aria-live="polite">Ready when you are.</p>
-            <form class="tiff-chat-form" data-chat-form>
-              <label class="visually-hidden" for="tiff-chat-input">Message Tiff</label>
-              <textarea id="tiff-chat-input" data-chat-input rows="1" maxlength="2000" placeholder="Ask Tiff anything…" required></textarea>
-              <button type="submit" data-chat-send aria-label="Send message to Tiff">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 12 20 4l-5 16-3-7-8-1Z"/><path d="m12 13 5-5"/></svg>
+        <div class="tiff-chat-shell" data-chat-launch>
+          <form class="tiff-launch-form" data-chat-launch-form>
+            <label class="visually-hidden" for="tiff-launch-input">Ask Tiff a question</label>
+            <textarea id="tiff-launch-input" data-launch-input rows="1" maxlength="2000" placeholder="Ask anything" required></textarea>
+            <div class="tiff-launch-bottom">
+              <span>Start with a question, an idea, or something you want to write.</span>
+              <button type="submit" aria-label="Send question to Tiff">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
               </button>
-            </form>
-          </section>
-          <p class="tiff-chat-note">Messages are processed by Google Gemini. Please don’t share passwords or sensitive personal information. <a href="privacy.html">Privacy policy</a>.</p>
+            </div>
+          </form>
+          <p class="tiff-chat-status" data-launch-status role="status" aria-live="polite"></p>
+          <p class="tiff-chat-note">Tiff processes your messages, with help from service providers, to generate replies. Please don’t share passwords or sensitive personal information. <a href="privacy.html">Privacy policy</a>.</p>
         </div>
         <div class="tiff-starters" data-chat-starters aria-labelledby="tiff-starters-label">
           <p id="tiff-starters-label">Need a starting point?</p>
@@ -148,7 +139,6 @@
     </section>
   </main>
   <script src="assets/site.js"></script>
-  <script src="assets/chat-config.js"></script>
-  <script src="assets/chat.js"></script>
+  <script src="assets/chat-launch.js"></script>
 </body>
 </html>

@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#ffffff">
+  <title>Chat with Tiff | Trendify Labs</title>
+  <meta name="description" content="Have a full conversation with Tiff, the AI assistant from Trendify Labs.">
+  <link rel="canonical" href="https://tiff.co.ke/page">
+  <link rel="icon" href="/assets/tiff-mark.png">
+  <link rel="stylesheet" href="/assets/chat-page.css">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="tiff-chat-page">
+  <a class="tiff-skip-link" href="#conversation">Skip to conversation</a>
+  <header class="tiff-topbar">
+    <a class="tiff-page-brand" href="/" aria-label="Tiff home">
+      <img src="/assets/tiff-mark.png" alt="" width="38" height="34">
+      <span>Tiff</span>
+    </a>
+    <div class="tiff-top-actions">
+      <button class="tiff-new-chat" type="button" data-new-chat aria-label="Start a new conversation">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        <span>New chat</span>
+      </button>
+      <a class="tiff-app-cta" href="/get-the-app.html">Get Tiff app <span aria-hidden="true">↗</span></a>
+    </div>
+  </header>
+
+  <main class="tiff-conversation-main" id="conversation">
+    <section class="tiff-conversation" aria-label="Conversation with Tiff">
+      <div class="tiff-chat-log" data-chat-log role="log" aria-live="polite" aria-relevant="additions text" aria-label="Tiff conversation">
+        <section class="tiff-empty-state" data-chat-empty aria-labelledby="tiff-welcome-title">
+          <img src="/assets/tiff-mark.png" alt="" width="54" height="48">
+          <h1 id="tiff-welcome-title">What would you like to explore?</h1>
+          <p>Ask a question, work through an idea, or get help with something you’re writing.</p>
+        </section>
+      </div>
+      <div class="tiff-composer-dock">
+        <p class="tiff-chat-status" data-chat-status role="status" aria-live="polite">Ready when you are.</p>
+        <form class="tiff-chat-form" data-chat-form>
+          <label class="tiff-visually-hidden" for="tiff-chat-input">Message Tiff</label>
+          <textarea id="tiff-chat-input" data-chat-input rows="1" maxlength="2000" placeholder="Message Tiff" required></textarea>
+          <button type="submit" data-chat-send aria-label="Send message to Tiff">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
+          </button>
+        </form>
+        <p class="tiff-chat-note">Tiff processes your messages, with help from service providers, to generate replies. Please don’t share passwords or sensitive personal information. <a href="/privacy.html">Privacy policy</a>.</p>
+      </div>
+    </section>
+  </main>
+  <script src="/assets/chat-config.js"></script>
+  <script src="/assets/chat.js"></script>
+</body>
+</html>

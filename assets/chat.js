@@ -1,5 +1,9 @@
 (() => {
-  const root = document.querySelector('[data-tiff-chat]');
+  if (window.location.pathname === '/page/') {
+    window.history.replaceState(null, '', `/page${window.location.search}${window.location.hash}`);
+  }
+
+  const root = document.querySelector('[data-chat-log]')?.closest('.tiff-conversation');
   if (!root) return;
 
   const log = root.querySelector('[data-chat-log]');
@@ -7,38 +11,70 @@
   const input = root.querySelector('[data-chat-input]');
   const sendButton = root.querySelector('[data-chat-send]');
   const status = root.querySelector('[data-chat-status]');
-  const newChatButton = root.querySelector('[data-new-chat]');
-  const starters = root.querySelector('[data-chat-starters]');
+  const newChatButton = document.querySelector('[data-new-chat]');
   const history = [];
   const maxHistoryMessages = 16;
+  const pendingPromptKey = 'tiff.pendingPrompt.v1';
   let busy = false;
+
+  function welcomeElement() {
+    const section = document.createElement('section');
+    section.className = 'tiff-empty-state';
+    section.setAttribute('aria-labelledby', 'tiff-welcome-title');
+
+    const mark = document.createElement('img');
+    mark.src = '/assets/tiff-mark.png';
+    mark.alt = '';
+    mark.width = 54;
+    mark.height = 48;
+
+    const heading = document.createElement('h1');
+    heading.id = 'tiff-welcome-title';
+    heading.textContent = 'What would you like to explore?';
+
+    const description = document.createElement('p');
+    description.textContent = 'Ask a question, work through an idea, or get help with something you’re writing.';
+
+    section.append(mark, heading, description);
+    return section;
+  }
 
   function messageElement(role, text, extraClass = '') {
     const article = document.createElement('article');
-    article.className = `tiff-message ${role}${extraClass ? ` ${extraClass}` : ''}`;
+    article.className = `tiff-turn ${role}${extraClass ? ` ${extraClass}` : ''}`;
     article.setAttribute('aria-label', role === 'user' ? 'Your message' : 'Tiff reply');
 
-    const label = document.createElement('span');
-    label.className = 'tiff-message-label';
-    label.textContent = role === 'user' ? 'You' : 'Tiff';
+    if (role === 'assistant') {
+      const avatar = document.createElement('span');
+      avatar.className = 'tiff-avatar';
+      avatar.setAttribute('aria-hidden', 'true');
+      const mark = document.createElement('img');
+      mark.src = '/assets/tiff-mark.png';
+      mark.alt = '';
+      avatar.append(mark);
+      article.append(avatar);
+    }
 
+    const content = document.createElement('div');
+    content.className = 'tiff-turn-content';
     const body = document.createElement('p');
     body.className = 'tiff-message-body';
     body.textContent = text;
-
-    article.append(label, body);
+    content.append(body);
+    article.append(content);
     return article;
   }
 
-  function addMessage(role, text) {
-    const element = messageElement(role, text);
+  function addMessage(role, text, extraClass = '') {
+    if (log.querySelector('.tiff-empty-state')) log.replaceChildren();
+    const element = messageElement(role, text, extraClass);
     log.append(element);
     log.scrollTop = log.scrollHeight;
     return element;
   }
 
   function showWelcome() {
-    log.replaceChildren(messageElement('assistant', 'Hi, I’m Tiff. What would you like to explore?'));
+    log.replaceChildren(welcomeElement());
     log.scrollTop = 0;
   }
 
@@ -47,12 +83,11 @@
     input.disabled = value;
     sendButton.disabled = value;
     newChatButton.disabled = value;
-    if (starters) starters.querySelectorAll('button').forEach((button) => { button.disabled = value; });
   }
 
   function resizeInput() {
     input.style.height = 'auto';
-    input.style.height = `${Math.min(input.scrollHeight, 152)}px`;
+    input.style.height = `${Math.min(input.scrollHeight, 180)}px`;
   }
 
   function endpointIsConfigured() {
@@ -67,7 +102,6 @@
     addMessage('user', text);
     history.push({ role: 'user', text });
     while (history.length > maxHistoryMessages) history.splice(0, 2);
-    if (starters) starters.hidden = true;
     input.value = '';
     resizeInput();
     setBusy(true);
@@ -127,22 +161,25 @@
     }
   });
 
-  if (starters) {
-    starters.addEventListener('click', (event) => {
-      const button = event.target.closest('[data-prompt]');
-      if (button && !busy) sendMessage(button.dataset.prompt || button.textContent || '');
-    });
-  }
-
   newChatButton.addEventListener('click', () => {
     if (busy) return;
     history.length = 0;
-    if (starters) starters.hidden = false;
+    input.value = '';
     showWelcome();
     status.textContent = 'New conversation started. Your chat history is only kept in this page while it is open.';
     input.focus();
+    resizeInput();
   });
 
   showWelcome();
   resizeInput();
+
+  let initialPrompt = '';
+  try {
+    initialPrompt = window.sessionStorage.getItem(pendingPromptKey) || '';
+    window.sessionStorage.removeItem(pendingPromptKey);
+  } catch {
+    // Direct visits still work when session storage is unavailable.
+  }
+  if (initialPrompt.trim()) sendMessage(initialPrompt);
 })();
