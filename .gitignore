@@ -1,0 +1,15 @@
+# Secret and local environment files — never commit API keys
+.env
+.env.*
+.dev.vars
+.dev.vars.*
+
+# Cloudflare Wrangler local state
+.wrangler/
+
+# Dependencies and generated files
+node_modules/
+dist/
+coverage/
+*.log
+.DS_Store

@@ -1,0 +1,16 @@
+name = "tiff-chat-api"
+main = "worker/index.mjs"
+compatibility_date = "2026-11-09"
+workers_dev = true
+
+[vars]
+ALLOWED_ORIGINS = "https://tiff.co.ke,https://www.tiff.co.ke"
+GEMINI_MODEL = "gemini-3.6-flash"
+
+[[ratelimits]]
+name = "TIFF_CHAT_LIMITER"
+namespace_id = "202611091"
+
+  [ratelimits.simple]
+  limit = 12
+  period = 60
