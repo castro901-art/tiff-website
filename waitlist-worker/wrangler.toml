@@ -1,0 +1,20 @@
+name = "tiffbot-waitlist"
+main = "index.mjs"
+compatibility_date = "2026-11-09"
+workers_dev = true
+
+[triggers]
+crons = ["*/15 * * * *"]
+
+[[d1_databases]]
+binding = "WAITLIST_DB"
+database_name = "tiffbot-waitlist"
+database_id = "c8ba9db9-fcdc-424c-96cb-1ae51003cb22"
+
+[[ratelimits]]
+name = "WAITLIST_LIMITER"
+namespace_id = "202611102"
+
+  [ratelimits.simple]
+  limit = 8
+  period = 60
