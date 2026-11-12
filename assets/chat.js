@@ -1,6 +1,6 @@
 (() => {
-  if (window.location.pathname === '/page/') {
-    window.history.replaceState(null, '', `/page${window.location.search}${window.location.hash}`);
+  if (window.location.pathname === '/page') {
+    window.history.replaceState(null, '', `/page/${window.location.search}${window.location.hash}`);
   }
 
   const root = document.querySelector('[data-chat-log]')?.closest('.tiff-conversation');

@@ -15,7 +15,7 @@ The site uses standalone HTML pages, shared styles in `assets/style.css`, and sh
 
 ## Tiff Chat architecture
 
-The homepage provides a question launcher. It carries the first prompt to the full conversation page at `/page` using tab-scoped session storage, without putting the prompt in the URL. The full chat UI is served by GitHub Pages and sends requests to a separate Cloudflare Worker, which forwards them to its configured AI service. The service key must exist only as the Worker secret `GEMINI_API_KEY`; never place it in HTML, JavaScript, a public GitHub secret, or another file shipped to visitors.
+The homepage provides a question launcher. It carries the first prompt to the full conversation page at `/page/` using tab-scoped session storage, without putting the prompt in the URL. The full chat UI is served by GitHub Pages and sends requests to a separate Cloudflare Worker, which forwards them to its configured AI service. The service key must exist only as the Worker secret `GEMINI_API_KEY`; never place it in HTML, JavaScript, a public GitHub secret, or another file shipped to visitors.
 
 The current Worker model is the stable Gemini 3.6 Flash (`gemini-3.6-flash`); set `GEMINI_MODEL` in the Worker configuration to choose another supported Gemini model. The Worker makes one bounded retry for transient provider errors, with a 15-second timeout per attempt.
 
