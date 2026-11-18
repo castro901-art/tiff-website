@@ -49,6 +49,20 @@ function validMessages(messages) {
   return totalChars <= MAX_TOTAL_CHARS;
 }
 
+const SAFE_DIAGNOSTIC_CATEGORIES = new Set([
+  'upstream_retry', 'upstream_failure', 'network_retry', 'network_failure',
+  'timeout_retry', 'timeout_failure', 'invalid_json', 'empty_reply'
+]);
+
+function safeUpstreamDiagnostic(requestId, upstreamStatus, category) {
+  if (!SAFE_DIAGNOSTIC_CATEGORIES.has(category)) return;
+  console.error(JSON.stringify({
+    requestId,
+    upstreamStatus: Number.isInteger(upstreamStatus) ? upstreamStatus : null,
+    category
+  }));
+}
+
 function withinRateLimit(request) {
   const forwarded = request.headers['x-forwarded-for'];
   const key = typeof forwarded === 'string' ? forwarded.split(',')[0].trim() : 'unknown';
@@ -132,6 +146,7 @@ module.exports = async function handler(req, res) {
     generationConfig: { maxOutputTokens: 500 }
   });
 
+  const diagnosticRequestId = require('node:crypto').randomUUID();
   let upstream;
   for (let attempt = 0; attempt < 2; attempt += 1) {
     try {
@@ -141,15 +156,25 @@ module.exports = async function handler(req, res) {
           'Content-Type': 'application/json',
           'x-goog-api-key': process.env.GEMINI_API_KEY
         },
-        body: apiBody,
-        signal: AbortSignal.timeout(15_000)
-      });
-    } catch {
+          body: apiBody,
+          signal: AbortSignal.timeout(15_000)
+        });
+    } catch (error) {
+      const retrying = attempt < 1;
+      const timedOut = error?.name === 'TimeoutError' || error?.name === 'AbortError';
+      safeUpstreamDiagnostic(
+        diagnosticRequestId,
+        null,
+        timedOut ? (retrying ? 'timeout_retry' : 'timeout_failure') : (retrying ? 'network_retry' : 'network_failure')
+      );
       if (attempt === 1) return json(res, 502, { error: 'Tiff could not connect to its AI service. Please try again.' }, origin);
       await new Promise((resolve) => setTimeout(resolve, 1_000 * (2 ** attempt)));
       continue;
     }
     const retryable = upstream.status === 408 || upstream.status === 429 || upstream.status >= 500;
+    if (!upstream.ok) {
+      safeUpstreamDiagnostic(diagnosticRequestId, upstream.status, retryable && attempt < 1 ? 'upstream_retry' : 'upstream_failure');
+    }
     if (upstream.ok || !retryable || attempt === 1) break;
     await new Promise((resolve) => setTimeout(resolve, 1_000 * (2 ** attempt)));
   }
@@ -166,13 +191,17 @@ module.exports = async function handler(req, res) {
   try {
     result = await upstream.json();
   } catch {
+    safeUpstreamDiagnostic(diagnosticRequestId, upstream.status, 'invalid_json');
     return json(res, 502, { error: 'Tiff could not read the AI response. Please try again.' }, origin);
   }
   const reply = result?.candidates?.[0]?.content?.parts
     ?.map((part) => typeof part.text === 'string' ? part.text : '')
     .join('')
     .trim();
-  if (!reply) return json(res, 502, { error: 'Tiff could not form a reply to that message. Please try another way.' }, origin);
+  if (!reply) {
+    safeUpstreamDiagnostic(diagnosticRequestId, upstream.status, 'empty_reply');
+    return json(res, 502, { error: 'Tiff could not form a reply to that message. Please try another way.' }, origin);
+  }
   return json(res, 200, { reply }, origin);
 };
 
