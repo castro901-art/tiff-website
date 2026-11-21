@@ -2,14 +2,25 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "redirects": [
     {
-      "source": "/:path*",
+      "source": "/",
       "has": [
         {
           "type": "host",
           "value": "^www\\.tiff\\.co\\.ke$"
         }
       ],
-      "destination": "https://tiff.co.ke/:path*",
+      "destination": "https://tiff.co.ke/",
+      "permanent": true
+    },
+    {
+      "source": "/:path(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "^www\\.tiff\\.co\\.ke$"
+        }
+      ],
+      "destination": "https://tiff.co.ke/:path",
       "permanent": true
     }
   ]
