@@ -4,12 +4,58 @@ const MAX_MESSAGES = 16;
 const MAX_USER_CHARS = 2_000;
 const MAX_ASSISTANT_CHARS = 6_000;
 const MAX_TOTAL_CHARS = 24_000;
+const TURNSTILE_VERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
+const TURNSTILE_ACTION = 'tiff_chat';
+const GLOBAL_USAGE_OBJECT_NAME = 'tiff-chat-global';
+const DEFAULT_DAILY_USAGE_LIMIT = 250;
 
 function allowedOrigins(env) {
   const configured = typeof env.ALLOWED_ORIGINS === 'string' && env.ALLOWED_ORIGINS.trim()
     ? env.ALLOWED_ORIGINS.split(',').map((origin) => origin.trim()).filter(Boolean)
     : DEFAULT_ORIGINS;
   return new Set(configured);
+}
+
+async function readLimitedRequestBody(request) {
+  const reader = request.body?.getReader();
+  if (!reader) return { text: '' };
+
+  const chunks = [];
+  let totalBytes = 0;
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      totalBytes += value.byteLength;
+      if (totalBytes > MAX_REQUEST_BYTES) {
+        try {
+          await reader.cancel();
+        } catch {
+          // The request has already exceeded its limit; cancellation is best effort.
+        }
+        return { tooLarge: true };
+      }
+      chunks.push(value);
+    }
+  } finally {
+    try {
+      reader.releaseLock();
+    } catch {
+      // A stream that failed while being read may already have released its lock.
+    }
+  }
+
+  const bytes = new Uint8Array(totalBytes);
+  let offset = 0;
+  for (const chunk of chunks) {
+    bytes.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+  try {
+    return { text: new TextDecoder('utf-8', { fatal: true }).decode(bytes) };
+  } catch {
+    return { invalidEncoding: true };
+  }
 }
 
 function jsonResponse(payload, status, origin, env) {
@@ -45,6 +91,110 @@ function validateMessages(messages) {
   return totalChars <= MAX_TOTAL_CHARS;
 }
 
+function dailyUsageLimit(env) {
+  const configured = env.TIFF_CHAT_DAILY_LIMIT;
+  const limit = configured === undefined || configured === null || configured === ''
+    ? DEFAULT_DAILY_USAGE_LIMIT
+    : Number(configured);
+  return Number.isSafeInteger(limit) && limit > 0 ? limit : null;
+}
+
+async function verifyTurnstile(token, origin, request, env) {
+  if (!env.TURNSTILE_SECRET_KEY) return { unavailable: true };
+
+  const form = new URLSearchParams({
+    secret: env.TURNSTILE_SECRET_KEY,
+    response: token
+  });
+  const clientIp = request.headers.get('CF-Connecting-IP');
+  if (clientIp) form.set('remoteip', clientIp);
+
+  let response;
+  try {
+    response = await fetch(TURNSTILE_VERIFY_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: form,
+      signal: AbortSignal.timeout(5_000)
+    });
+  } catch {
+    return { unavailable: true };
+  }
+  if (!response.ok) return { unavailable: true };
+
+  let result;
+  try {
+    result = await response.json();
+  } catch {
+    return { unavailable: true };
+  }
+
+  let hostname;
+  try {
+    hostname = new URL(origin).hostname;
+  } catch {
+    return { success: false };
+  }
+  return result?.success === true
+    && result.hostname === hostname
+    && result.action === TURNSTILE_ACTION
+    ? { success: true }
+    : { success: false };
+}
+
+async function claimGlobalUsage(env) {
+  const limit = dailyUsageLimit(env);
+  if (!limit || !env.TIFF_CHAT_USAGE) return { unavailable: true };
+
+  try {
+    const namespace = env.TIFF_CHAT_USAGE;
+    const stub = namespace.get(namespace.idFromName(GLOBAL_USAGE_OBJECT_NAME));
+    const response = await stub.fetch('https://tiff-chat-usage/claim', { method: 'POST' });
+    if (!response.ok) return { unavailable: true };
+    const result = await response.json();
+    return typeof result?.allowed === 'boolean' ? result : { unavailable: true };
+  } catch {
+    return { unavailable: true };
+  }
+}
+
+export class GlobalChatUsage {
+  constructor(state, env) {
+    this.state = state;
+    this.env = env;
+  }
+
+  async fetch(request) {
+    const url = new URL(request.url);
+    if (url.pathname !== '/claim') return new Response('Not found.', { status: 404 });
+    if (request.method !== 'POST') return new Response('Method not allowed.', { status: 405 });
+
+    const limit = dailyUsageLimit(this.env);
+    if (!limit) return new Response('Usage limit is not configured.', { status: 503 });
+
+    const day = new Date().toISOString().slice(0, 10);
+    try {
+      const result = await this.state.storage.transaction(async (storage) => {
+        const current = await storage.get('daily-usage');
+        const used = current?.day === day && Number.isSafeInteger(current.count) && current.count > 0
+          ? current.count
+          : 0;
+        if (used >= limit) return { allowed: false, used, limit, day };
+
+        const next = used + 1;
+        await storage.put('daily-usage', { day, count: next });
+        return { allowed: true, used: next, limit, day };
+      });
+      return new Response(JSON.stringify(result), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' }
+      });
+    } catch {
+      return new Response('Usage limit is unavailable.', { status: 503 });
+    }
+  }
+}
+
 export default {
   async fetch(request, env) {
     const origin = request.headers.get('Origin');
@@ -75,36 +225,48 @@ export default {
     if (request.method !== 'POST') {
       return jsonResponse({ error: 'Method not allowed.' }, 405, origin, env);
     }
-    if (!request.headers.get('Content-Type')?.toLowerCase().includes('application/json')) {
+    const contentType = request.headers.get('Content-Type') || '';
+    if (contentType.split(';', 1)[0].trim().toLowerCase() !== 'application/json') {
       return jsonResponse({ error: 'Send a JSON request.' }, 415, origin, env);
     }
 
-    const length = Number(request.headers.get('Content-Length') || 0);
-    if (length > MAX_REQUEST_BYTES) {
-      return jsonResponse({ error: 'That message is too large. Please shorten it and try again.' }, 413, origin, env);
+    const declaredLength = request.headers.get('Content-Length');
+    if (declaredLength !== null) {
+      if (!/^\d+$/.test(declaredLength)) {
+        return jsonResponse({ error: 'The request could not be read. Please try again.' }, 400, origin, env);
+      }
+      if (BigInt(declaredLength) > BigInt(MAX_REQUEST_BYTES)) {
+        return jsonResponse({ error: 'That message is too large. Please shorten it and try again.' }, 413, origin, env);
+      }
     }
     if (!env.GEMINI_API_KEY) {
       return jsonResponse({ error: 'Tiff Chat is not available right now.' }, 503, origin, env);
     }
 
-    let rawBody;
+    let bodyRead;
     try {
-      rawBody = await request.text();
+      bodyRead = await readLimitedRequestBody(request);
     } catch {
       return jsonResponse({ error: 'The request could not be read. Please try again.' }, 400, origin, env);
     }
-    if (new TextEncoder().encode(rawBody).byteLength > MAX_REQUEST_BYTES) {
+    if (bodyRead.tooLarge) {
       return jsonResponse({ error: 'That message is too large. Please shorten it and try again.' }, 413, origin, env);
+    }
+    if (bodyRead.invalidEncoding) {
+      return jsonResponse({ error: 'The request could not be read. Please try again.' }, 400, origin, env);
     }
 
     let body;
     try {
-      body = JSON.parse(rawBody);
+      body = JSON.parse(bodyRead.text);
     } catch {
       return jsonResponse({ error: 'The request could not be read. Please try again.' }, 400, origin, env);
     }
     if (!validateMessages(body?.messages)) {
       return jsonResponse({ error: 'Please send a shorter message and try again.' }, 400, origin, env);
+    }
+    if (typeof body.turnstileToken !== 'string' || !body.turnstileToken.trim() || body.turnstileToken.length > 4_096) {
+      return jsonResponse({ error: 'Please complete the security check and try again.' }, 403, origin, env);
     }
 
     let rateLimit;
@@ -117,6 +279,22 @@ export default {
     }
     if (!rateLimit?.success) {
       return jsonResponse({ error: 'You have sent several messages. Please wait a minute and try again.' }, 429, origin, env);
+    }
+
+    const challenge = await verifyTurnstile(body.turnstileToken, origin, request, env);
+    if (challenge.unavailable) {
+      return jsonResponse({ error: 'Tiff Chat is not available right now.' }, 503, origin, env);
+    }
+    if (!challenge.success) {
+      return jsonResponse({ error: 'Please complete the security check and try again.' }, 403, origin, env);
+    }
+
+    const usage = await claimGlobalUsage(env);
+    if (usage.unavailable) {
+      return jsonResponse({ error: 'Tiff Chat is not available right now.' }, 503, origin, env);
+    }
+    if (!usage.allowed) {
+      return jsonResponse({ error: 'Tiff has reached today’s global chat limit. Please try again after the daily reset.' }, 429, origin, env);
     }
 
     const contents = body.messages.map(({ role, text }) => ({

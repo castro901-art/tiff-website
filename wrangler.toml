@@ -4,8 +4,17 @@ compatibility_date = "2026-11-09"
 workers_dev = true
 
 [vars]
-ALLOWED_ORIGINS = "https://tiff.co.ke,https://www.tiff.co.ke"
+ALLOWED_ORIGINS = "https://tiff.co.ke,https://www.tiff.co.ke,https://cloudflare-preview.tiff-website-preview.pages.dev,https://ai.tiff.co.ke"
 GEMINI_MODEL = "gemini-3.6-flash"
+TIFF_CHAT_DAILY_LIMIT = "250"
+
+[[durable_objects.bindings]]
+name = "TIFF_CHAT_USAGE"
+class_name = "GlobalChatUsage"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["GlobalChatUsage"]
 
 [[ratelimits]]
 name = "TIFF_CHAT_LIMITER"

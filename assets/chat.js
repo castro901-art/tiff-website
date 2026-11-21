@@ -16,6 +16,83 @@
   const maxHistoryMessages = 16;
   const pendingPromptKey = 'tiff.pendingPrompt.v1';
   let busy = false;
+  let turnstileScriptPromise = null;
+  let turnstileWidgetId = null;
+  let pendingTurnstile = null;
+
+  function settleTurnstile(error, token) {
+    if (!pendingTurnstile) return;
+    const pending = pendingTurnstile;
+    pendingTurnstile = null;
+    window.clearTimeout(pending.timer);
+    if (error) pending.reject(error);
+    else pending.resolve(token);
+  }
+
+  function loadTurnstile() {
+    if (window.turnstile) return Promise.resolve(window.turnstile);
+    if (turnstileScriptPromise) return turnstileScriptPromise;
+
+    turnstileScriptPromise = new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+      script.async = true;
+      script.defer = true;
+      script.onload = () => window.turnstile
+        ? resolve(window.turnstile)
+        : reject(new Error('The security check could not be loaded. Please try again.'));
+      script.onerror = () => reject(new Error('The security check could not be loaded. Please try again.'));
+      document.head.append(script);
+    });
+    return turnstileScriptPromise;
+  }
+
+  async function getTurnstileToken() {
+    const sitekey = window.TIFF_TURNSTILE_SITE_KEY;
+    if (typeof sitekey !== 'string' || !sitekey.trim()) {
+      throw new Error('Tiff Chat security is being set up. Please try again soon.');
+    }
+    const turnstile = await loadTurnstile();
+
+    return new Promise((resolve, reject) => {
+      const timer = window.setTimeout(() => {
+        settleTurnstile(new Error('The security check timed out. Please try again.'));
+      }, 90_000);
+      pendingTurnstile = { resolve, reject, timer };
+
+      try {
+        if (turnstileWidgetId === null) {
+          const slot = document.createElement('div');
+          slot.className = 'tiff-turnstile-slot';
+          document.body.append(slot);
+          turnstileWidgetId = turnstile.render(slot, {
+            sitekey,
+            action: 'tiff_chat',
+            execution: 'execute',
+            appearance: 'interaction-only',
+            callback(token) {
+              if (typeof token === 'string' && token) settleTurnstile(null, token);
+              else settleTurnstile(new Error('The security check could not be completed. Please try again.'));
+            },
+            'error-callback': () => settleTurnstile(new Error('The security check could not be completed. Please try again.')),
+            'expired-callback': () => settleTurnstile(new Error('The security check expired. Please try again.'))
+          });
+        }
+        turnstile.execute(turnstileWidgetId);
+      } catch {
+        settleTurnstile(new Error('The security check could not be completed. Please try again.'));
+      }
+    });
+  }
+
+  function resetTurnstileWidget() {
+    if (!window.turnstile || turnstileWidgetId === null) return;
+    try {
+      window.turnstile.reset(turnstileWidgetId);
+    } catch {
+      // A failed or expired challenge may already have reset itself.
+    }
+  }
 
   function welcomeElement() {
     const section = document.createElement('section');
@@ -113,10 +190,11 @@
         throw new Error('Tiff Chat is being connected. Please try again soon.');
       }
 
+      const turnstileToken = await getTurnstileToken();
       const response = await fetch(window.TIFF_CHAT_API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: history })
+        body: JSON.stringify({ messages: history, turnstileToken })
       });
 
       let payload;
@@ -143,6 +221,7 @@
       addMessage('assistant', message);
       status.textContent = 'There was a problem sending your message.';
     } finally {
+      resetTurnstileWidget();
       setBusy(false);
       input.focus();
     }
