@@ -182,8 +182,8 @@
     input.value = '';
     resizeInput();
     setBusy(true);
-    status.textContent = 'Tiff is thinking…';
-    const pending = addMessage('assistant', 'Tiff is thinking…', 'pending');
+    status.textContent = 'Checking security…';
+    const pending = addMessage('assistant', 'Checking security…', 'pending');
 
     try {
       if (!endpointIsConfigured()) {
@@ -191,6 +191,8 @@
       }
 
       const turnstileToken = await getTurnstileToken();
+      status.textContent = 'Tiff is thinking…';
+      pending.querySelector('.tiff-message-body').textContent = 'Tiff is thinking…';
       const response = await fetch(window.TIFF_CHAT_API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

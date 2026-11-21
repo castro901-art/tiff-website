@@ -46,6 +46,7 @@ button, textarea { font: inherit; }
 .tiff-chat-form button svg { width: 20px; height: 20px; }
 .tiff-chat-note { margin: 8px 4px 0; color: #8a8790; font-size: .69rem; line-height: 1.45; text-align: center; }
 .tiff-chat-note a { color: #6f45a8; text-decoration: underline; text-underline-offset: 2px; }
+.tiff-turnstile-slot { position: fixed; z-index: 100; left: 50%; bottom: max(120px, calc(env(safe-area-inset-bottom) + 100px)); transform: translateX(-50%); }
 .tiff-visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 .tiff-chat-page :focus-visible { outline: 2px solid #8152bb; outline-offset: 3px; }
 @media (max-width: 600px) {
