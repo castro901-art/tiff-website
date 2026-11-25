@@ -8,6 +8,23 @@
     main.insertAdjacentHTML('afterend', footer);
   }
 
+  var headerBrand = document.querySelector('.nav .brand');
+  var headerBrandMark = headerBrand && headerBrand.querySelector('.brand-mark');
+  if (headerBrand && headerBrandMark) {
+    var markWrap = document.createElement('span');
+    markWrap.className = 'brand-mark-wrap';
+    markWrap.setAttribute('aria-hidden', 'true');
+    headerBrandMark.parentNode.insertBefore(markWrap, headerBrandMark);
+    markWrap.appendChild(headerBrandMark);
+
+    var holidayHat = document.createElement('img');
+    holidayHat.className = 'brand-holiday-hat';
+    holidayHat.src = 'assets/christmas-hat.svg';
+    holidayHat.alt = '';
+    holidayHat.setAttribute('aria-hidden', 'true');
+    markWrap.appendChild(holidayHat);
+  }
+
   var menuButton = document.querySelector('.menu-btn');
   var nav = document.getElementById('primary-nav');
   if (menuButton && nav) {
